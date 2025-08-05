@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebak Kata Ceria!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        .confetti:nth-child(1) { left: 10%; animation-delay: 0s; background: #e74c3c; }
+        .confetti:nth-child(2) { left: 20%; animation-delay: 0.5s; background: #3498db; }
+        .confetti:nth-child(3) { left: 30%; animation-delay: 1s; background: #2ecc71; }
+        .confetti:nth-child(4) { left: 40%; animation-delay: 1.5s; background: #f39c12; }
+        .confetti:nth-child(5) { left: 50%; animation-delay: 2s; background: #9b59b6; }
+        .confetti:nth-child(6) { left: 60%; animation-delay: 0.3s; background: #e67e22; }
+        .confetti:nth-child(7) { left: 70%; animation-delay: 0.8s; background: #1abc9c; }
+        .confetti:nth-child(8) { left: 80%; animation-delay: 1.3s; background: #e91e63; }
+        .confetti:nth-child(9) { left: 90%; animation-delay: 1.8s; background: #34495e; }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .cat-happy {
+            animation: catBounce 0.8s ease-in-out;
+        }
+        
+        @keyframes catBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-button {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 min-h-screen">
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50 hidden">
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-purple-800 mb-2">🎮 Tebak Kata Ceria!</h1>
+            <p class="text-lg text-purple-600">Belajar membaca sambil bermain! 📚✨</p>
+            <div class="mt-4 bg-white rounded-full px-6 py-2 inline-block shadow-lg">
+                <span class="text-purple-700 font-bold">Skor: </span>
+                <span id="score" class="text-green-600 font-bold text-xl">0</span>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6">
+            <!-- Question Counter -->
+            <div class="text-center mb-6">
+                <div class="bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-full px-4 py-2 inline-block">
+                    <span class="font-bold">Soal <span id="question-number">1</span> dari 10</span>
+                </div>
+            </div>
+
+            <!-- Image Display -->
+            <div class="text-center mb-8">
+                <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-3xl p-8 inline-block shadow-lg">
+                    <div id="image-display" class="text-8xl md:text-9xl bounce-in">🍎</div>
+                </div>
+            </div>
+
+            <!-- Answer Options -->
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <button id="option-0" class="answer-btn bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    apel
+                </button>
+                <button id="option-1" class="answer-btn bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    buku
+                </button>
+                <button id="option-2" class="answer-btn bg-gradient-to-r from-purple-400 to-purple-500 hover:from-purple-500 hover:to-purple-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    meja
+                </button>
+                <button id="option-3" class="answer-btn bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    kaki
+                </button>
+            </div>
+
+            <!-- Feedback Area -->
+            <div id="feedback-area" class="text-center min-h-[120px] flex items-center justify-center">
+                <div class="text-gray-500 text-lg">Pilih kata yang sesuai dengan gambar! 👆</div>
+            </div>
+        </div>
+
+        <!-- Next Button -->
+        <div class="text-center">
+            <button id="next-btn" class="bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-500 hover:to-red-500 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg pulse-button hidden">
+                Soal Berikutnya! 🚀
+            </button>
+        </div>
+
+        <!-- Game Complete Modal -->
+        <div id="game-complete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden">
+            <div class="bg-white rounded-3xl p-8 max-w-md mx-4 text-center shadow-2xl">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-bold text-purple-800 mb-4">Selamat!</h2>
+                <p class="text-lg text-gray-700 mb-4">Kamu telah menyelesaikan semua soal!</p>
+                <div class="text-2xl font-bold text-green-600 mb-6">
+                    Skor Akhir: <span id="final-score">0</span>/10
+                </div>
+                <button id="play-again-btn" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105">
+                    Main Lagi! 🎮
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const gameData = [
+            { emoji: '🍎', word: 'apel', options: ['apel', 'buku', 'meja', 'kaki'] },
+            { emoji: '🐱', word: 'kucing', options: ['anjing', 'kucing', 'burung', 'ikan'] },
+            { emoji: '🌸', word: 'bunga', options: ['daun', 'bunga', 'pohon', 'rumput'] },
+            { emoji: '🚗', word: 'mobil', options: ['sepeda', 'kapal', 'mobil', 'pesawat'] },
+            { emoji: '🏠', word: 'rumah', options: ['rumah', 'sekolah', 'toko', 'kantor'] },
+            { emoji: '⭐', word: 'bintang', options: ['bulan', 'matahari', 'awan', 'bintang'] },
+            { emoji: '🎈', word: 'balon', options: ['bola', 'balon', 'kado', 'topi'] },
+            { emoji: '🍌', word: 'pisang', options: ['jeruk', 'mangga', 'pisang', 'anggur'] },
+            { emoji: '👁️', word: 'mata', options: ['hidung', 'mulut', 'mata', 'telinga'] },
+            { emoji: '🌈', word: 'pelangi', options: ['awan', 'hujan', 'angin', 'pelangi'] }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let gameQuestions = [];
+
+        // Initialize game
+        function initGame() {
+            currentQuestion = 0;
+            score = 0;
+            gameQuestions = [...gameData].sort(() => Math.random() - 0.5);
+            updateScore();
+            showQuestion();
+            document.getElementById('game-complete-modal').classList.add('hidden');
+        }
+
+        // Show current question
+        function showQuestion() {
+            if (currentQuestion >= gameQuestions.length) {
+                showGameComplete();
+                return;
+            }
+
+            const question = gameQuestions[currentQuestion];
+            const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+            
+            // Update question number
+            document.getElementById('question-number').textContent = currentQuestion + 1;
+            
+            // Update image
+            const imageDisplay = document.getElementById('image-display');
+            imageDisplay.textContent = question.emoji;
+            imageDisplay.className = 'text-8xl md:text-9xl bounce-in';
+            
+            // Update options
+            shuffledOptions.forEach((option, index) => {
+                const btn = document.getElementById(`option-${index}`);
+                btn.textContent = option;
+                btn.disabled = false;
+                btn.className = btn.className.replace('opacity-50 cursor-not-allowed', '');
+            });
+            
+            // Reset feedback area
+            document.getElementById('feedback-area').innerHTML = '<div class="text-gray-500 text-lg">Pilih kata yang sesuai dengan gambar! 👆</div>';
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        // Handle answer selection
+        function selectAnswer(selectedOption) {
+            const question = gameQuestions[currentQuestion];
+            const isCorrect = selectedOption === question.word;
+            
+            // Disable all buttons
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+            
+            if (isCorrect) {
+                score++;
+                updateScore();
+                showCorrectFeedback();
+                showConfetti();
+            } else {
+                showIncorrectFeedback();
+            }
+            
+            // Show next button after delay
+            setTimeout(() => {
+                document.getElementById('next-btn').classList.remove('hidden');
+            }, 2000);
+        }
+
+        // Show correct answer feedback
+        function showCorrectFeedback() {
+            document.getElementById('feedback-area').innerHTML = `
+                <div class="cat-happy">
+                    <div class="text-6xl mb-2">🐱</div>
+                    <div class="text-2xl font-bold text-green-600 mb-2">🎉 Hebat!</div>
+                    <div class="text-lg text-green-700">Jawaban kamu benar!</div>
+                </div>
+            `;
+        }
+
+        // Show incorrect answer feedback
+        function showIncorrectFeedback() {
+            document.getElementById('feedback-area').innerHTML = `
+                <div class="shake">
+                    <div class="text-6xl mb-2">🐱</div>
+                    <div class="text-2xl font-bold text-orange-600 mb-2">😅 Coba lagi ya!</div>
+                    <div class="text-lg text-orange-700">Jawaban yang benar: <strong>${gameQuestions[currentQuestion].word}</strong></div>
+                </div>
+            `;
+        }
+
+        // Show confetti animation
+        function showConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            confettiContainer.classList.remove('hidden');
+            
+            setTimeout(() => {
+                confettiContainer.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Update score display
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        // Move to next question
+        function nextQuestion() {
+            currentQuestion++;
+            showQuestion();
+        }
+
+        // Show game complete modal
+        function showGameComplete() {
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('game-complete-modal').classList.remove('hidden');
+            showConfetti();
+        }
+
+        // Event listeners
+        document.querySelectorAll('.answer-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                selectAnswer(btn.textContent);
+            });
+        });
+
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('play-again-btn').addEventListener('click', initGame);
+
+        // Initialize game on load
+        initGame();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a5674dd0a24056',t:'MTc1NDM4NzU2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
